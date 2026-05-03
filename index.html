@@ -1,0 +1,49 @@
+<html>
+	<head>
+		<title>Feedback App - Home</title>
+		<link rel = "stylesheet" href = "style.css">
+	</head>
+	<body>
+		<div class="container">
+			<div class="nav">
+				<a href="index.html" class="active">Home</a>
+				<a href="create.html">Create</a>
+			</div>
+
+			<h1>Past Feedback</h1>
+
+			<div class="card">
+				<table>
+					<thead>
+						<tr>
+							<th>Name</th>
+							<th>Feedback</th>
+						</tr>
+					</thead>
+					<tbody id="info"></tbody>
+				</table>
+			</div>
+		</div>
+
+		<script>
+			let info = document.getElementById("info");
+			let url = "https://fbb-1jaq.onrender.com/getall";
+
+			fetch(url)
+			.then(res => res.json())
+			.then(data => {
+				let output = "";
+				for(let i = 0; i < data.length; i++){
+					output += "<tr>";
+					output += "<td>" + data[i].name + "</td>";
+					output += "<td>" + data[i].feedback + "</td>";
+					output += "</tr>";
+				}
+				info.innerHTML = output;
+			})
+			.catch(err => {
+				console.log("issue " + err);
+			});
+		</script>
+	</body>
+</html>

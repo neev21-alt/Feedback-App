@@ -1,0 +1,78 @@
+<html>
+	<head>
+		<title>Feedback App - Create</title>
+		<link rel = "stylesheet" href = "style.css">
+	</head>
+	<body>
+		<div class="container">
+			<div class="nav">
+				<a href="index.html">Home</a>
+				<a href="create.html" class="active">Create</a>
+			</div>
+
+			<h1>Feedback Please</h1>
+
+			<div class="card">
+				<form onsubmit="save(event)">	
+					<div class="form-group">
+						<label for="name">Your Name</label>
+						<input type="text" id="name" placeholder="Enter your full name"/>
+					</div>
+					<div class="form-group">
+						<label for="feedback">Message</label>
+						<textarea id="feedback" placeholder="What's on your mind?" rows="4"></textarea>
+					</div>
+					<input type="submit" id="btn" value="Send Feedback"/>
+				</form>
+				<p id="msg"></p>
+			</div>
+		</div>
+
+		<script>
+			function save(event){
+				event.preventDefault();
+				
+				let name = document.getElementById("name");
+				let feedback = document.getElementById("feedback");
+				let btn = document.getElementById("btn");
+				let msg = document.getElementById("msg");
+	
+				if(name.value === ""){
+					alert("Name is empty");
+					msg.textContent = "";
+					name.focus();
+					return;
+				}
+				
+				if(feedback.value === ""){
+					alert("Feedback is empty");
+					msg.textContent = "";
+					feedback.focus();
+					return;
+				}
+				btn.disabled = true;
+			
+				let url = "https://fbb-1jaq.onrender.com/save";	
+				let options = {
+					method:"POST",
+					headers:{"Content-Type":"application/json"},
+					body:JSON.stringify({name:name.value, feedback:feedback.value})
+				};
+				
+				fetch(url, options)
+				.then(res => res.text())
+				.then(data => {
+					msg.textContent = data;
+					btn.disabled = false;
+					name.value = "";
+					feedback.value = "";
+					name.focus();
+				})
+				.catch(err => {	
+					msg.textContent = "Error: " + err;
+					btn.disabled = false;
+				});
+			}
+		</script>
+	</body>
+</html>
